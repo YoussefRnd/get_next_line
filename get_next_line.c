@@ -6,7 +6,7 @@
 /*   By: yboumlak <yboumlak@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 17:04:40 by yboumlak          #+#    #+#             */
-/*   Updated: 2024/01/09 20:09:40 by yboumlak         ###   ########.fr       */
+/*   Updated: 2024/01/09 21:14:57 by yboumlak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ char	*update_stash(char *stash)
 	}
 	return (NULL);
 }
+
 char	*read_file(int fd, char *stash)
 {
 	int		read_bytes;
@@ -77,6 +78,8 @@ char	*read_file(int fd, char *stash)
 		}
 		buffer[read_bytes] = '\0';
 		stash = ft_strjoin(stash, buffer);
+		if (ft_strchr(stash, '\n'))
+			break ;
 	}
 	return (stash);
 }

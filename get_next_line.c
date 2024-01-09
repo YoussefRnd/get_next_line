@@ -6,7 +6,7 @@
 /*   By: yboumlak <yboumlak@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 17:04:40 by yboumlak          #+#    #+#             */
-/*   Updated: 2024/01/08 18:07:49 by yboumlak         ###   ########.fr       */
+/*   Updated: 2024/01/09 20:09:40 by yboumlak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,29 +60,37 @@ char	*update_stash(char *stash)
 	}
 	return (NULL);
 }
-
-char	*get_next_line(int fd)
+char	*read_file(int fd, char *stash)
 {
-	int			read_bytes;
-	static char	*stash = NULL;
-	char		*line;
-	char		tmp[BUFFER_SIZE + 1];
+	int		read_bytes;
+	char	buffer[BUFFER_SIZE + 1];
 
 	read_bytes = 1;
 	while (read_bytes > 0)
 	{
-		if (fd < 0 || BUFFER_SIZE < 0)
-			break ;
-		read_bytes = read(fd, tmp, BUFFER_SIZE);
+		read_bytes = read(fd, buffer, BUFFER_SIZE);
 		if (read_bytes < 0)
 		{
 			free(stash);
 			stash = NULL;
 			return (NULL);
 		}
-		tmp[read_bytes] = '\0';
-		stash = ft_strjoin(stash, tmp);
+		buffer[read_bytes] = '\0';
+		stash = ft_strjoin(stash, buffer);
 	}
+	return (stash);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*stash = NULL;
+	char		*line;
+
+	if (fd < 0 || BUFFER_SIZE < 0)
+		return (NULL);
+	stash = read_file(fd, stash);
+	if (!stash)
+		return (NULL);
 	line = process_line(&stash);
 	stash = update_stash(stash);
 	return (line);

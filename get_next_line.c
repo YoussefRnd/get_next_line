@@ -6,7 +6,7 @@
 /*   By: yboumlak <yboumlak@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 17:04:40 by yboumlak          #+#    #+#             */
-/*   Updated: 2024/01/09 21:14:57 by yboumlak         ###   ########.fr       */
+/*   Updated: 2024/01/10 20:21:49 by yboumlak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ char	*read_file(int fd, char *stash)
 		if (read_bytes < 0)
 		{
 			free(stash);
-			stash = NULL;
 			return (NULL);
 		}
 		buffer[read_bytes] = '\0';
@@ -89,13 +88,15 @@ char	*get_next_line(int fd)
 	static char	*stash = NULL;
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	stash = read_file(fd, stash);
 	if (!stash)
 		return (NULL);
 	line = process_line(&stash);
 	stash = update_stash(stash);
+	if (!line)
+		return (free(stash), NULL);
 	return (line);
 }
 
@@ -103,12 +104,22 @@ char	*get_next_line(int fd)
 // {
 // 	char	*line;
 // 	int		fd;
+// 	int		i;
 
+// 	i = 0;
 // 	fd = open("get_next_line.txt", O_RDONLY);
-// 	while ((line = get_next_line(fd)))
+// 	while (i++ < 5)
 // 	{
-// 		printf("%s", line);
-// 		free(line);
+// 		if (i == 2)
+// 			close(fd);
+// 		printf("%zd\n", read(fd, line, 50));
 // 	}
-// 	// pause();
+// 	// line = get_next_line(fd);
+// 	// printf("%s", line);
+// 	// 	// while ((line = get_next_line(fd)))
+// 	// 	// {
+// 	// 	// 	printf("%s", line);
+// 	// 	// 	free(line);
+// 	// 	// }
+// 	// 	// pause();
 // }

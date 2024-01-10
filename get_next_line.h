@@ -6,7 +6,7 @@
 /*   By: yboumlak <yboumlak@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 17:05:00 by yboumlak          #+#    #+#             */
-/*   Updated: 2024/01/08 15:03:40 by yboumlak         ###   ########.fr       */
+/*   Updated: 2024/01/10 13:39:22 by yboumlak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 15
 # endif
 
 # include <fcntl.h>

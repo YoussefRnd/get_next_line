@@ -6,33 +6,32 @@
 /*   By: yboumlak <yboumlak@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 17:04:40 by yboumlak          #+#    #+#             */
-/*   Updated: 2024/01/11 19:02:27 by yboumlak         ###   ########.fr       */
+/*   Updated: 2024/01/12 18:41:08 by yboumlak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
 char	*process_line(char **stash)
 {
 	int		i;
 	char	*line;
-	char	*deref;
+	char	*current_stash;
 
 	i = 0;
-	deref = *stash;
-	if (stash && deref)
+	current_stash = *stash;
+	if (stash && current_stash)
 	{
-		while (deref[i])
+		while (current_stash[i])
 		{
-			if (ft_strchr("\n", deref[i]))
-				return (ft_substr(deref, 0, i + 1));
+			if (current_stash[i] == '\n')
+				return (ft_substr(current_stash, 0, i + 1));
 			i++;
 		}
-		if (deref[i] == '\0')
+		if (current_stash[i] == '\0')
 		{
-			line = ft_substr(deref, 0, i);
-			free(deref);
+			line = ft_substr(current_stash, 0, i);
+			free(current_stash);
 			*stash = NULL;
 			return (line);
 		}
@@ -105,20 +104,21 @@ char	*get_next_line(int fd)
 	stash = update_stash(stash);
 	return (line);
 }
+/* 
+int	main(void)
+{
+	char	*line;
+	int		fd;
+	int		i;
 
-// int	main(void)
-// {
-// 	char	*line;
-// 	int		fd;
-// 	int		i;
-
-// 	i = 0;
-// 	fd = open("get_next_line.txt", O_RDONLY);
-// 	while ((line = get_next_line(fd)))
-// 	{
-// 		printf("%s", line);
-// 		free(line);
-// 	}
-// close(fd)
-// 	// pause();
-// }
+	i = 0;
+	fd = open("file1.txt", O_RDONLY);
+	while ((line = get_next_line(fd)))
+	{
+		printf("%s", line);
+		free(line);
+	}
+	close(fd);
+	// pause();
+}
+ */

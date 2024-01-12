@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yboumlak <yboumlak@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 17:04:40 by yboumlak          #+#    #+#             */
-/*   Updated: 2024/01/11 19:02:27 by yboumlak         ###   ########.fr       */
+/*   Updated: 2024/01/11 18:37:37 by yboumlak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 #include <stdio.h>
 
 char	*process_line(char **stash)
@@ -87,38 +87,51 @@ char	*read_file(int fd, char *stash)
 
 char	*get_next_line(int fd)
 {
-	static char	*stash = NULL;
+	static char	*stash[1024];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
-	stash = read_file(fd, stash);
-	if (!stash)
+	stash[fd] = read_file(fd, stash[fd]);
+	if (!stash[fd])
 		return (NULL);
-	line = process_line(&stash);
+	line = process_line(&stash[fd]);
 	if (!line)
 	{
-		free(stash);
-		stash = NULL;
+		free(stash[fd]);
+		stash[fd] = NULL;
 		return (NULL);
 	}
-	stash = update_stash(stash);
+	stash[fd] = update_stash(stash[fd]);
 	return (line);
 }
 
-// int	main(void)
+// int main(void)
 // {
-// 	char	*line;
-// 	int		fd;
-// 	int		i;
+// 	int fd1 = open("file1.txt", O_RDONLY);
+// 	int fd2 = open("file2.txt", O_RDONLY);
+// 	char *line;
 
-// 	i = 0;
-// 	fd = open("get_next_line.txt", O_RDONLY);
-// 	while ((line = get_next_line(fd)))
+// 	if (fd1 == -1 || fd2 == -1)
 // 	{
-// 		printf("%s", line);
+// 		perror("Error opening file");
+// 		return 1;
+// 	}
+
+// 	while ((line = get_next_line(fd1)) != NULL)
+// 	{
+// 		printf("File1: %s", line);
 // 		free(line);
 // 	}
-// close(fd)
-// 	// pause();
+
+// 	while ((line = get_next_line(fd2)) != NULL)
+// 	{
+// 		printf("File2: %s", line);
+// 		free(line);
+// 	}
+
+// 	close(fd1);
+// 	close(fd2);
+
+// 	return 0;
 // }
